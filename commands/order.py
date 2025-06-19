@@ -29,10 +29,12 @@ class OrderCommand(Command):
         if order not in self.__operations:
             raise ValueError(f"Неподдерживаемый порядок сортировки '{order}'. Ожидается: {self.__operations}")
 
-        position = table.head.index(name)
-        sorted_indexes = sorted(range(len(table.rows)), key=lambda i: table.rows[i][position], reverse=order == "desc")
+        position: int = table.head.index(name)
 
-        new_table = Table()
+        # Сортиров
+        sorted_indexes: list[int] = sorted(range(len(table.rows)), key=lambda i: table.rows[i][position], reverse=order == "desc")
+
+        new_table: Table = Table()
         new_table.head = table.head
         for i in sorted_indexes:
             new_table.add_row(table.rows[i])

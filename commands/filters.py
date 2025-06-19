@@ -26,22 +26,24 @@ class FilterCommand(Command):
         Raises:
             ValueError: Если указано несуществующее поле или тип значения не подходит.
         """
-        name, op, value = StringParser.parse(string, list(self.allowed_characters))
+        name, op, value = StringParser.parse(string, self.allowed_characters)
 
         if name not in table:
             raise ValueError(f"Нет поля '{name}' в таблице. Доступные: {table.head}")
 
         position: int = table.head.index(name)
-        method_name: str = self.__operations[op]
+        method_name: str = self.__operations[op] # Имя метода соответствующие знаку, например '=' - '__eq__'
 
+        # Пробуем типизировать value, так как типизированны значения в столбце
         try:
             typed_value = table.types[position](value)
         except Exception as e:
             raise ValueError(f"Ошибка преобразования значения '{value}' в тип столбца '{name}': {e}")
 
-        new_table = Table()
+        new_table: Table = Table()
         new_table.head = table.head
 
+        # Добавляем строки, если соблюдается условие фильтрации, например cell_value.__eq__(typed_value)
         for row in table.rows:
             cell_value = row[position]
             if getattr(cell_value, method_name)(typed_value):
