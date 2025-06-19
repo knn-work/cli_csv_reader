@@ -1,0 +1,5 @@
+[tool.pytest.ini_options]
+addopts = "-v -s"
+pythonpath=["."]
+testpaths = ["tests"]
+log_cli = true # включает вывод логов во время выполнения тестов.
