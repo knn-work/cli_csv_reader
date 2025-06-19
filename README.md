@@ -61,4 +61,3 @@
 
 ![img.png](img/order_by_where.png)
 
-## Покрытие тестами
